@@ -1,0 +1,15 @@
+# Data directory
+/data/*
+
+# MLFlow runs
+/mlruns/*
+
+# IDE (Integrated Development Environment)
+.idea/
+
+# Jupyter notebooks
+.ipynb_checkpoints
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
