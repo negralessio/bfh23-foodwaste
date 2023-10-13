@@ -16,3 +16,6 @@ __pycache__/
 
 #Virtual Enviroments
 venv/
+
+#Ignoring conda folder
+.conda
