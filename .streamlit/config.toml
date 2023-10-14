@@ -1,0 +1,51 @@
+[global]
+
+[logger]
+
+[client]
+# Change the visibility of items in the toolbar, options menu,
+# and settings dialog (top right of the app).
+# Default: "auto"
+toolbarMode = "developer"
+
+[runner]
+
+[server]
+#port = 80
+# Max size, in megabytes, for files uploaded with the file_uploader.
+# Default: 200
+maxUploadSize = 200
+# Max size, in megabytes, of messages that can be sent via the WebSocket
+# connection.
+# Default: 200
+maxMessageSize = 200
+
+[browser]
+# Whether to send usage statistics to Streamlit.
+# Default: true
+gatherUsageStats = false
+
+[mapbox]
+
+[deprecation]
+
+[theme]
+# The preset Streamlit theme that your custom theme inherits from.
+# One of "light" or "dark".
+base = "dark"
+
+# Primary accent color for interactive elements.
+primaryColor = "#9cac3d"
+
+# Background color for the main content area.
+backgroundColor = "#005fa9"
+
+# Background color used for the sidebar and most interactive widgets.
+#secondaryBackgroundColor = "#ffe300"
+
+# Color used for almost all text.
+textColor = "#ffffff"
+
+# Font family for all text in the app, except code blocks. One of "sans serif",
+# "serif", or "monospace".
+# font =
