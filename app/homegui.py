@@ -1,5 +1,7 @@
 import streamlit as stm
+import pandas as pd
 from streamlit_extras.app_logo import add_logo
+from datetime import timedelta, date
 
 stm.set_page_config(page_title="EDEKA - Wir lieben Lebensmittel", page_icon="assets/favicon.png", layout="wide")
 
@@ -29,3 +31,4 @@ add_logo("assets/edeka_logo.png", height=200)
 
 
 stm.title("This is the Home Page")
+
