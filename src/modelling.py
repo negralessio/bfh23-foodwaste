@@ -177,19 +177,19 @@ def visualize_predictions(df_concat, test_df, product_name, mse, mae, target: st
     plt.show()
 
 
-def prepare_inference_sample(TEST_DATE: str) -> pd.DataFrame:
+def prepare_inference_sample(date: str, date2: str) -> pd.DataFrame:
     """ Puts input Date into right format that model expects
 
     :param TEST_DATE: str -- Test date
     :return: test_sample: pd.DataFrame -- Dataframe ready to feed to the model
     """
-    test_sample = pd.DataFrame({"date": pd.date_range(start=TEST_DATE, end=TEST_DATE)})
+    test_sample = pd.DataFrame({"date": pd.date_range(start=date, end=date2)})
     test_sample.index = test_sample["date"]
     test_sample = create_time_features(test_sample)
     test_sample.drop("date", axis=1, inplace=True)
     return test_sample
 
-def train_and_inference(master_df: pd.DataFrame, ids: list, date: str, test_split_size = 0.1,
+def train_and_inference(master_df: pd.DataFrame, ids: list, date: str, date2:str, test_split_size = 0.1,
                         refit_model: bool = True, plot_results: bool = False, verbosity: int = 1) -> dict:
     # Make predictions
     predictions: dict = {}
@@ -229,11 +229,13 @@ def train_and_inference(master_df: pd.DataFrame, ids: list, date: str, test_spli
             y_train = pd.DataFrame(X_train["Abschriften Menge"])
             X_train = X_train.drop("Abschriften Menge", axis=1)
             reg.fit(X_train, y_train)
+            if verbosity > 0:
+                print(f"Making prediction for input date(s): {date} - {date2} ...")
             # Inference Sample Test
-            test_sample = prepare_inference_sample(date)
+            test_sample = prepare_inference_sample(date, date2)
             y_pred_sample = reg.predict(test_sample)
         else:
-            test_sample = prepare_inference_sample(date)
+            test_sample = prepare_inference_sample(date, date2)
             y_pred_sample = reg.predict(test_sample)
 
         if plot_results:
@@ -241,13 +243,13 @@ def train_and_inference(master_df: pd.DataFrame, ids: list, date: str, test_spli
             df_concat = concat_data_with_prediction(y_train=y_train, y_pred=y_pred)
             visualize_predictions(df_concat, test_df, product_name, mse, mae)
 
+        # Collect run details in predictions dict
         predictions[id] = {"Name": product_name,
                            "ID": id,
-                           "Fitted-XGBR": reg,
                            "Test MSE":mse,
                            "Test MAE": mae,
                            "Test Size": k,
-                           "Prediction-Date": date,
+                           "Prediction-Date": pd.date_range(start=date, end=date2),
                            "Prediction": np.float32(y_pred_sample)}
 
     return predictions
