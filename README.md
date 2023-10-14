@@ -17,7 +17,7 @@
 }
 ``` 
 
-## Setting up the environment and run the code ▶️
+# Setting up the environment and run the code ▶️
 
 1. Clone the repository by running the following command in your terminal:
 
@@ -45,3 +45,6 @@
 
 ⚠️ Please note that due to time constraint and the lack of data, the model lacks predictive power.  
 This repo should therefore only show the prototype that we built during the Black Forest Hackathon 2023.
+
+# Example 
+![prediction](assets/prediction_example.svg)
