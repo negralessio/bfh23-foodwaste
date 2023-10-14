@@ -43,4 +43,5 @@ def analyze_top_k_foodwasters(master_df: pd.DataFrame, top_k: int):
 
 
 if __name__ == "__main__":
-    predictions = main(IDs=[794366005], date="2021-03-15", refit_model=True, plot_foodwasters=False, top_k=None)
+    predictions = main(IDs=[794366005, 2231234009], date="2021-03-15", refit_model=True, plot_foodwasters=False, top_k=None)
+    print(predictions)
