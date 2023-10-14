@@ -25,7 +25,8 @@ class APIHandler:
             } for item in data]
             # DataFrame erstellen
             df = pd.DataFrame(formatted_data)
-            return df
+            filtered_df = df[df['Team1'].str.contains('Freiburg')]
+            return filtered_df
         else:
             return None
 
@@ -34,6 +35,7 @@ class APIHandler:
         location = nomi.query_postal_code(plz)
         url = "https://archive-api.open-meteo.com/v1/archive?latitude={}&longitude={}&start_date={}&end_date={}&hourly=temperature_2m,rain,snowfall&timezone=Europe%2FBerlin".format(
             location.latitude, location.longitude, start_date, end_date)
+        print(url)
         response = requests.get(url)
         if response.status_code == 200:
             data = response.json()
@@ -45,7 +47,7 @@ class APIHandler:
             }
             # DataFrame erstellen
             df = pd.DataFrame(hourly_data)
-            return df, location.postal_code, location.place_name, location.state_name, location.state_code
+            return df
         else:
             return None
 
@@ -61,6 +63,7 @@ class APIHandler:
 
     def get_data_from_FerienAPI(self, state_code, year):
         url = "https://ferien-api.de/api/v1/holidays/{}/{}".format(state_code, year)
+        print(url)
         response = requests.get(url)
         if response.status_code == 200:
             data = response.json()
@@ -72,7 +75,7 @@ class APIHandler:
     def get_data_from_PostcodeAPI(self, plz):
         nomi = pgeocode.Nominatim('de')
         location = nomi.query_postal_code(plz)
-        return location.place_name, location.state_name
+        return location.place_name, location.state_name, location.state_code
     def list_available_apis(self):
         api_methods = [func for func in dir(self) if callable(getattr(self, func)) and not func.startswith("__")]
         return api_methods

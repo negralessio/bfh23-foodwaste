@@ -67,7 +67,7 @@ if stm.button('compute'):
     live_predict = main(products_to_predict, day_of_prediction, date2=day_of_prediction)
 
     # dynamic table
-    @stm.cache_data
+    # @stm.cache_data
     def load_data():
         return pd.DataFrame(
             {
