@@ -6,7 +6,7 @@
 # Change the visibility of items in the toolbar, options menu,
 # and settings dialog (top right of the app).
 # Default: "auto"
-toolbarMode = "viewer"
+toolbarMode = "developer"
 
 [runner]
 

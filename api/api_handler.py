@@ -32,7 +32,6 @@ class APIHandler:
     def get_data_from_WeatherAPI_History(self, plz, start_date, end_date):
         nomi = pgeocode.Nominatim('de')
         location = nomi.query_postal_code(plz)
-        print(location)
         url = "https://archive-api.open-meteo.com/v1/archive?latitude={}&longitude={}&start_date={}&end_date={}&hourly=temperature_2m,rain,snowfall&timezone=Europe%2FBerlin".format(
             location.latitude, location.longitude, start_date, end_date)
         response = requests.get(url)
@@ -70,7 +69,10 @@ class APIHandler:
         else:
             return None
 
-
+    def get_data_from_PostcodeAPI(self, plz):
+        nomi = pgeocode.Nominatim('de')
+        location = nomi.query_postal_code(plz)
+        return location.place_name, location.state_name
     def list_available_apis(self):
         api_methods = [func for func in dir(self) if callable(getattr(self, func)) and not func.startswith("__")]
         return api_methods
