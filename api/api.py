@@ -50,8 +50,8 @@ class APIHandler:
         else:
             return None
 
-    def get_data_from_FeiertageAPI(self, year, state):
-        url = "https://feiertage-api.de/api/?jahr={}&nur_land={}".format(year, state)
+    def get_data_from_FeiertageAPI(self, year, state_code):
+        url = "https://feiertage-api.de/api/?jahr={}&nur_land={}".format(year, state_code)
         response = requests.get(url)
         if response.status_code == 200:
             data = response.json()
@@ -59,6 +59,17 @@ class APIHandler:
             return df
         else:
             return None
+
+    def get_data_from_FerienAPI(self, state_code, year):
+        url = "https://ferien-api.de/api/v1/holidays/{}/{}".format(state_code, year)
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            df = pd.DataFrame(data)
+            return df
+        else:
+            return None
+
 
     def list_available_apis(self):
         api_methods = [func for func in dir(self) if callable(getattr(self, func)) and not func.startswith("__")]
@@ -73,6 +84,10 @@ class APIHandler:
 
     feiertage = my_api.get_data_from_FeiertageAPI(2023, state_code)
     print(feiertage)
+
+    ferien = my_api.get_data_from_FerienAPI(state_code, 2023)
+    print(ferien)
+
     print("Verfügbare API-Funktionen:")
     available_apis = my_api.list_available_apis()
     for api in available_apis:
