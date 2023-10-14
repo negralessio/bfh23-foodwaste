@@ -190,7 +190,7 @@ def prepare_inference_sample(TEST_DATE: str) -> pd.DataFrame:
     return test_sample
 
 def train_and_inference(master_df: pd.DataFrame, ids: list, date: str, test_split_size = 0.1,
-                        plot_results: bool = False, verbosity: int = 1) -> dict:
+                        refit_model: bool = True, plot_results: bool = False, verbosity: int = 1) -> dict:
     # Make predictions
     predictions: dict = {}
 
@@ -221,9 +221,20 @@ def train_and_inference(master_df: pd.DataFrame, ids: list, date: str, test_spli
         mse = mean_squared_error(y_true=y_test, y_pred=y_pred)
         mae = mean_absolute_error(y_true=y_test, y_pred=y_pred)
 
-        # Inference Sample Test
-        test_sample = prepare_inference_sample(date)
-        y_pred_sample = reg.predict(test_sample)
+        if refit_model:
+            if verbosity > 0:
+                print("Refitting model ...")
+            X_train, _, _ = train_test_split(product_df, last_k_percent=0)
+            X_train = create_time_features(X_train)
+            y_train = pd.DataFrame(X_train["Abschriften Menge"])
+            X_train = X_train.drop("Abschriften Menge", axis=1)
+            reg.fit(X_train, y_train)
+            # Inference Sample Test
+            test_sample = prepare_inference_sample(date)
+            y_pred_sample = reg.predict(test_sample)
+        else:
+            test_sample = prepare_inference_sample(date)
+            y_pred_sample = reg.predict(test_sample)
 
         if plot_results:
             # Concat results for plotting
