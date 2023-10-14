@@ -2,7 +2,8 @@ import streamlit as stm
 import pandas as pd
 
 from streamlit_extras.app_logo import add_logo
-from datetime import timedelta, date
+from datetime import timedelta, date, datetime
+from main import main
 
 stm.set_page_config(page_title="EDEKA - Wir lieben Lebensmittel", page_icon="assets/favicon.png", layout="wide")
 
@@ -39,47 +40,41 @@ if day_of_prediction > (date.today() + timedelta(days=5)):
     stm.write("Day is to far in futur!")
 
 # import product range csv
-raw_product_range = pd.read_csv('data/products_unique.csv', sep=',')
+raw_product_range = pd.read_csv('data/artikelnummer_produkt.csv', sep=',')
 products_lst_tp = [tuple(x) for x in raw_product_range.values]
 product_range = {}
+
 for tpl in products_lst_tp:
-    product_range[tpl[1]] = tpl[2]
+    product_range[tpl[2]] = tpl[1]
 
 # show prediction
-else:
-    # Searchbox
-    options = stm.multiselect(
+options = stm.multiselect(
         'Which product do you want to predict?',
         [i for i in product_range.keys()] + [j for j in product_range.values()]
-    )
+        )
 
-    if stm.button('compute'):
-        # run pipeline
-        products_to_predict = [int]
-        for i in options:
-            if i in product_range.keys():
-                products_to_predict += [product_range[i]]
-            elif i in product_range.values():
-                products_to_predict += [i]
-        if len(options) == 0:
-            products_to_predict = [i for i in product_range.values()]
+if stm.button('compute'):
+    # run pipeline
+    products_to_predict: int = []
+    for i in options:
+        if i in product_range.keys():
+            products_to_predict += [product_range[i]]
+        if i in product_range.values():
+            products_to_predict += [i]
+    if len(options) == 0:
+        products_to_predict = [i for i in product_range.values()]
+    # send products_to_predict and day_of_prediction
+    live_predict = main(products_to_predict, day_of_prediction, date2=day_of_prediction)
 
-        # send products_to_predict and day_of_prediction
-
-        # get data from pipeline
-        predicted_data = pd.read_csv('data/prediction/example_prediction.csv', sep=',')
-        prediction = [tuple(x) for x in predicted_data.values]
-
-        # dynamic table
-        @stm.cache_data
-        def load_data():
-            return pd.DataFrame(
-                {
-                    "Date": [prediction[i][0] for i in range(len(prediction))],
-                    "Number of product": [str(prediction[i][1]) for i in range(len(prediction))],
-                    "Name": [prediction[i][2]for i in range(len(prediction))],
-                    "prediction": [prediction[i][3] for i in range(len(prediction))]
-                }
-            )
-        stm.dataframe(load_data(), use_container_width=True)
-
+    # dynamic table
+    @stm.cache_data
+    def load_data():
+        return pd.DataFrame(
+            {
+                "ID": [str(live_predict[i]["ID"]) for i in products_to_predict for _ in range(len(live_predict[i]["Prediction-Date"]))],
+                "Name": [live_predict[i]["Name"] for i in products_to_predict for _ in range(len(live_predict[i]["Prediction-Date"]))],
+                "Date": [j for j in [live_predict[i]["Prediction-Date"][0] for i in products_to_predict]],
+                "Prediction": [j for j in [live_predict[i]["Prediction"][0] for i in products_to_predict]]
+            }
+        )
+    stm.dataframe(load_data(), use_container_width=True)
