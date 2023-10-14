@@ -13,7 +13,7 @@ hide_streamlit_style = """
 stm.markdown(hide_streamlit_style, unsafe_allow_html=True)
 background_image_style = """
             <style>
-            .st-emotion-cache-6qob1r {
+            [data-testid=stSidebar] {
                 background-image: url("https://www.edeka.de/edeka-ui-assets/images/bg-dark.jpg");
                 background-size: cover;
             }
