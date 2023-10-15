@@ -7,6 +7,8 @@ from api.api_handler import APIHandler
 import pandas as pd
 import os
 from main import main
+import webbrowser
+
 api = APIHandler()
 
 stm.set_page_config(page_title="EDEKA - Wir lieben Lebensmittel", page_icon="assets/favicon.png", layout="wide")
@@ -34,10 +36,24 @@ stm.markdown(background_image_style, unsafe_allow_html=True)
 with stm.sidebar:
     stm.image("assets/claim-grunge-650.png", use_column_width=True)
     stm.text("Made with ❤️ by DataPilots")
-add_logo("assets/edeka_logo.png", height=200)
+#add_logo("assets/logoFinalInvert_200.png", height=75)
+stm.markdown(
+        f"""
+        <style>
+            [data-testid="stSidebarNav"] {{
+                background-image: url("https://i.imgur.com/mPqEtdf.png");
+                background-repeat: no-repeat;
+                padding-top: {75 - 40}px;
+                background-position: 20px 20px;
+                background-size: 88%;
+            }}
+        </style>
+        """,
+        unsafe_allow_html=True,)
 
 # Main content
 stm.title("Starte deinen Planungsprozess")
+
 
 tab1, tab2, tab3 = stm.tabs(["Allgemein", "Parameter", "Sonstiges"])
 with tab1:
@@ -70,7 +86,7 @@ with tab1:
             product_range[tpl[2]] = tpl[1]
 
         options = stm.multiselect(
-            'Which product do you want to predict?',
+            'Für welches Produkt soll ein Forecast erstellt werden?',
             [i for i in product_range.keys()] + [j for j in product_range.values()]
         )
 
@@ -135,7 +151,7 @@ with tab2:
             stm.markdown("Wird das Kaufverhalten der Kunden durch Sschulferien beinflusst? Beispiel: Bäckerei liegt "
                          "benachbart zu einer Schule.")
 
-if stm.button(":bread: Generate"):
+if stm.button(":bread: Erzeugen",key="button1"):
     with stm.status("Downloading data...", expanded=True) as status:
         if plz == '':
             stm.toast("Bitte PLZ eingeben")
@@ -231,4 +247,9 @@ if stm.button(":bread: Generate"):
         forecast_df.to_csv(file_path, encoding='utf-8', index=False)
         status.update(label=":100: Data generiert", state="complete", expanded=False)
 
-    stm.dataframe(forecast_df, use_container_width=True)
+    URL_STRING = "http://localhost:8501/Resultate"
+
+    stm.markdown(
+        f'<a target="_self" href="{URL_STRING}" style="display: inline-block; padding: 12px 20px; background-color: #4CAF50; color: white; text-align: center; text-decoration: none; font-size: 16px; border-radius: 4px;">Daten anzeigen :heart:</a>',
+        unsafe_allow_html=True
+    )
