@@ -18,6 +18,7 @@
 ``` 
 
 # Setting up the environment and run the code ▶️
+**Python Version**: 3.11.6
 
 1. Clone the repository by running the following command in your terminal:
 
