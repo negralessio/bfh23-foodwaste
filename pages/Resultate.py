@@ -53,13 +53,78 @@ holidays_file = 'holidays.csv'
 forecast_file = 'forecast.csv'
 
 if os.path.exists("data/gui/" + weather_file):
-    weather_df = pd.read_csv("data/gui/" + weather_file)
+    try:
+        # Attempt to read the file
+        weather_df = pd.read_csv("data/gui/" + weather_file)
+
+        # Check if the DataFrame is empty
+        if weather_df.empty:
+            print("The file is empty.")
+    except pd.errors.EmptyDataError:
+        print("No columns to parse from the file. The file is empty or has no valid data.")
+    except FileNotFoundError:
+        print("The file does not exist.")
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
+    finally:
+        # Code that will execute whether or not an exception is raised
+        # For example, you can close any resources here
+        pass
 if os.path.exists("data/gui/" + football_file):
-    football_df = pd.read_csv("data/gui/" + football_file)
+    try:
+        # Attempt to read the file
+        football_df = pd.read_csv("data/gui/" + football_file)
+
+        # Check if the DataFrame is empty
+        if football_df.empty:
+            print("The file is empty.")
+    except pd.errors.EmptyDataError:
+        print("No columns to parse from the file. The file is empty or has no valid data.")
+    except FileNotFoundError:
+        print("The file does not exist.")
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
+    finally:
+        # Code that will execute whether or not an exception is raised
+        # For example, you can close any resources here
+        pass
 if os.path.exists("data/gui/" + feiertage_file):
-    feiertage_df = pd.read_csv("data/gui/" + feiertage_file)
+    try:
+        # Attempt to read the file
+        feiertage_df = pd.read_csv("data/gui/" + feiertage_file)
+
+        # Check if the DataFrame is empty
+        if feiertage_df.empty:
+            print("The file is empty.")
+    except pd.errors.EmptyDataError:
+        print("No columns to parse from the file. The file is empty or has no valid data.")
+    except FileNotFoundError:
+        print("The file does not exist.")
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
+    finally:
+        # Code that will execute whether or not an exception is raised
+        # For example, you can close any resources here
+        pass
 if os.path.exists("data/gui/" + holidays_file):
     holidays_df = pd.read_csv("data/gui/" + holidays_file)
+    try:
+        # Attempt to read the file
+        holidays_df = pd.read_csv("data/gui/" + holidays_file)
+
+        # Check if the DataFrame is empty
+        if holidays_df.empty:
+            print("The file is empty.")
+    except pd.errors.EmptyDataError:
+        print("No columns to parse from the file. The file is empty or has no valid data.")
+    except FileNotFoundError:
+        print("The file does not exist.")
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
+    finally:
+        # Code that will execute whether or not an exception is raised
+        # For example, you can close any resources here
+        pass
 if os.path.exists("data/gui/" + forecast_file):
     forecast_df = pd.read_csv("data/gui/" + forecast_file)
     forecast_df['ID'] = forecast_df['ID'].astype(str)
