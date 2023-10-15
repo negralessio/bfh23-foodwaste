@@ -29,8 +29,8 @@
 
 2. [Optional] Create a virtual environment and activate it. For example, using the built-in `venv` module in Python:
    ```
-   python3 -m venv venv-phase-1
-   source venv-phase-1/bin/activate
+   python3 -m venv venv
+   source venv/bin/activate
    ```
 
 3. Install the required packages by running the following command in your terminal:
