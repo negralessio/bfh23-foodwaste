@@ -63,9 +63,9 @@ with tab1:
             # Calender
             # day_of_prediction = stm.date_input("Which day do you like to predict?", value=date.today())
             time_range = stm.date_input("Welchen Zeitraum willst du vorhergesagt bekommen?",
-                                        (datetime.datetime.strptime("2021/03/15", '%Y/%m/%d'),datetime.datetime.strptime("2021/03/15", '%Y/%m/%d')),
-                                        datetime.datetime.strptime("2021/03/15", '%Y/%m/%d'),
-                                        datetime.datetime.strptime("2021/03/20", '%Y/%m/%d'), format="DD.MM.YYYY")
+                                        (datetime.datetime.strptime("2021/04/15", '%Y/%m/%d'),datetime.datetime.strptime("2021/04/15", '%Y/%m/%d')),
+                                        datetime.datetime.strptime("2021/04/15", '%Y/%m/%d'),
+                                        datetime.datetime.strptime("2021/04/20", '%Y/%m/%d'), format="DD.MM.YYYY")
             # if day_of_prediction > (date.today() + timedelta(days=5)):
             #    stm.write("Day is to far in futur!")
             if len(time_range) == 2:
@@ -152,7 +152,7 @@ with tab2:
                          "benachbart zu einer Schule.")
 
 if stm.button(":bread: Erzeugen",key="button1"):
-    with stm.status("Downloading data...", expanded=True) as status:
+    with stm.status("Analyzing Data ...", expanded=True) as status:
         if plz == '':
             stm.toast("Bitte PLZ eingeben")
             stm.stop()

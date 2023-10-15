@@ -64,6 +64,8 @@ if os.path.exists("data/gui/" + forecast_file):
     forecast_df = pd.read_csv("data/gui/" + forecast_file)
     forecast_df['ID'] = forecast_df['ID'].astype(str)
     forecast_df['Prediction'] = np.ceil(forecast_df['Prediction'])
+    # DataFrame Reihenfolge ändern
+    forecast_df = forecast_df[['Prediction-Date', 'ID', 'Name', 'Prediction']]
 
 # Tabelle erstellen, falls Forecast vorhanden
 if os.path.exists("data/gui/" + forecast_file):
