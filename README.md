@@ -41,7 +41,7 @@
 4. Run streamlit using the following command in the root dir.
 
    ```
-   streamlit run homegui.py
+   streamlit run Home.py  
    ```
 
 ⚠️ Please note that due to time constraint and the lack of data, the model lacks predictive power.  
