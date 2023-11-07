@@ -9,7 +9,7 @@ import src.utils as utils
 _DATA_PATH = "data/raw/ABSCHRIFTEN14102023125147047.xlsx"
 
 
-def main(IDs: list, date: str, date2:str, refit_model: bool = True, plot_foodwasters: bool = False, top_k=None, verbosity = 1):
+def main(IDs: list, date: str, date2:str, refit_model: bool = True, plot_foodwasters: bool = False, top_k=None, plot_results=False, verbosity = 1):
     """ Main pipeline executing the train process and inference
 
     First loads master_df from data/raw. Then does some preprocessing on the data, e.g. flipping values, replacing values.
@@ -24,6 +24,7 @@ def main(IDs: list, date: str, date2:str, refit_model: bool = True, plot_foodwas
     :param refit_model: bool -- Whether to refit model after evaluation on 100% Train data (default: True)
     :param plot_foodwasters: bool -- Whether to plot the top k food wasters
     :param top_k: bool -- Number of top k food wasters to show / Analyse, e.g. k = 20
+    :parma plot_results: bool -- Whether to plot the Time series + Prediction
     :param verbosity: int -- Level of verbosity (default: 1)
     :return: predictions: dict[dict] -- Dictionary of dicts with ID as key and run details as Values
     """
@@ -43,7 +44,7 @@ def main(IDs: list, date: str, date2:str, refit_model: bool = True, plot_foodwas
     # Train model for the given IDs and to point estimate given by date
     predictions = modelling.train_and_inference(master_df=df, ids=IDs, date=date, date2=date2,
                                                 test_split_size=0.1, refit_model=refit_model,
-                                                plot_results=False, verbosity=verbosity)
+                                                plot_results=plot_results, verbosity=verbosity)
 
     return predictions
 
@@ -69,5 +70,6 @@ def analyze_top_k_foodwasters(master_df: pd.DataFrame, top_k: int) -> tuple[pd.D
 
 
 if __name__ == "__main__":
-    predictions = main(IDs=[794366005], date="2021-04-16", date2="2021-04-18", refit_model=True, plot_foodwasters=False, top_k=None)
+    predictions = main(IDs=[3931215004], date="2021-04-16", date2="2021-04-18",
+                       refit_model=True, plot_foodwasters=False, top_k=20, plot_results=True)
     print(predictions)
